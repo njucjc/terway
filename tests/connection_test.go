@@ -391,7 +391,7 @@ func (s *ConnectionTestSuite) TestPod2Pod() {
 			for _, dst := range dstPods {
 				s.T().Logf("src %s -> dst %s", podInfo(&src), podInfo(&dst))
 				for _, ip := range podIPs(&dst) {
-					addr := net.JoinHostPort(ip, fmt.Sprintf("%d", serverPort))
+					addr := net.JoinHostPort(ip, fmt.Sprintf("%d", httpTestPort))
 					l := fmt.Sprintf("src %s -> dst %s", podInfo(&src), addr)
 					_, stdErrOut, err := s.ExecHTTPGet(src.Namespace, src.Name, curlAddr(addr))
 					s.Expected(c.Status, stdErrOut, err, l)
@@ -497,7 +497,7 @@ func (s *ConnectionTestSuite) TestPod2ServiceName() {
 		for _, src := range srcPods {
 			for _, svc := range dstServices {
 				l := fmt.Sprintf("src %s -> dst svc name %s", podInfo(&src), svc.Name)
-				_, stdErrOut, err := s.ExecHTTPGet(src.Namespace, src.Name, net.JoinHostPort(svc.Name, fmt.Sprintf("%d", serverPort)))
+				_, stdErrOut, err := s.ExecHTTPGet(src.Namespace, src.Name, net.JoinHostPort(svc.Name, fmt.Sprintf("%d", httpTestPort)))
 				s.Expected(c.Status, stdErrOut, err, l)
 			}
 		}
